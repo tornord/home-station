@@ -1,0 +1,40 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #222;
+  height: 60px;
+  padding: 10px;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.App-header h2 {
+  color: white;
+  background-color: #222;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: 12px;
+}
+
+button#run {
+  margin-bottom: 10px;
+}
+
+p.model-links {
+  word-wrap: break-word;
+  font-size: 12px;  
+}
+
+span.timestamp {
+  background: #333;
+  border-radius: 3px;
+  color: #bbb;
+  padding: 0px 3px;
+}
