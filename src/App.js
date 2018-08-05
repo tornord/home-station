@@ -97,12 +97,12 @@ export class App extends Component {
 				<div className="row">
 					<div className="col-12">
 						<p>Välkommen!</p>
-						<p>Solen går upp { showTime(times.sunrise) } och ned { showTime(times.sunset) }</p>
-						<p>Månens fas är { moonIllumination.fraction.toFixed(3) }</p>
-						<p><TimePicker value={ moment(now.getTime()) } format={ timeFormat } onChange={ (e) => this.timePickerChange(this, e) } /></p>
-						<p>Lamporna är { lampState ? "på" : "av" }</p>
+						<p>Klockan är <TimePicker value={ moment(now.getTime()) } format={ timeFormat } onChange={ (e) => this.timePickerChange(this, e) } /></p>
+						<p>Lamporna är { lampState ? "PÅ" : "AV" }</p>
 						<p>De { nextSwitch.state ? "tänds" : "släcks" } { showTime(nextSwitch.timestamp) }</p>
 						<p>Därefter { nextNextSwitch.state ? "tänds" : "släcks" } de { showTime(nextNextSwitch.timestamp) }</p>
+						<p>Solen går upp { showTime(times.sunrise) } och ned { showTime(times.sunset) }</p>
+						<p>Månens fas är { moonIllumination.fraction.toFixed(2) }</p>
 					</div>
 				</div>
 			</div>
