@@ -1,54 +1,23 @@
 'use strict';
-var SerialPort = require('serialport');
 
-var port = new SerialPort('COM3', {
-	baudRate: 9600,
-	parity: "none",
-	dataBits: 8,
-	stopBits: 1
-});
+var { ArduinoCommunicator } = require("./ArduinoCommunicator");
 
-port.on('open', function() {
-	console.log('Port open');
-});
+var comm = new ArduinoCommunicator("COM5");
+var command = 0;
+var n = 0;
 
-var buf = "";
-var messQueue = [];
-
-setInterval(() => { 
-	if (messQueue.length === 0) {
-		return;
+var sendCommand = () => {
+	var tme = new Date(new Date().getTime() + 5000 + Math.floor(10000*Math.random()));
+	comm.sendCommand(tme, "4107678", 0, command);
+	command = 1 - command;	
+	if (n++<10) {
+		setTimeout(() => {
+			sendCommand();
+		}, 5000 + Math.floor(10000*Math.random()));	 
 	}
-	port.write(messQueue[0] + "\r\n");
-	messQueue.splice(0, 1);
-}, 100);
+};
+sendCommand();
 
-port.on('data', function(data) {
-	buf += data.toString('ascii');
-	let mess = null;
-	while (true) {
-		let idx = buf.indexOf("\r\n");
-		if (idx<0) {
-			break;
-		}
-		mess = buf.substring(0, idx);
-		buf = buf.substring(idx+2);
-		if (mess.match(/R?eady/)) {
-			var now = Math.round(new Date().getTime()/1000);
-			messQueue.push(now);
-			for (let i=1; i<=4; i++) {
-				messQueue.push((now+2*i) + " 4107678 0 " + (i%2));
-			}
-		}
-		if (mess.match(/checkTimers\([0-9]{10}\)/)) {
-			var t = Number(mess.substring(12,22));
-			console.log("heartbeat, diff ms = " + (1000*t - new Date().getTime()).toFixed(0));
-		}
-		else {
-			console.log(mess);
-		}
-	}
-});
 /*
 1473886559
 1473886559 4107678 0 0
