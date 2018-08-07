@@ -8,8 +8,8 @@ var onoff = false;
 var n = 0;
 
 var sendCommand = () => {
-	var tme = new Date(new Date().getTime() + 5000 + Math.floor(10000*Math.random()));
-	comm.sendCommand(tme, house, 0, onoff);
+	console.log("Switch!");
+	comm.sendCommand(house, 0, onoff);
 	onoff = !onoff;	
 	if (n++<10) {
 		setTimeout(() => {
