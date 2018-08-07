@@ -3,13 +3,14 @@
 var { ArduinoCommunicator } = require("./ArduinoCommunicator");
 
 var comm = new ArduinoCommunicator("COM5");
-var command = 0;
+var house = "4107678";
+var onoff = false;
 var n = 0;
 
 var sendCommand = () => {
 	var tme = new Date(new Date().getTime() + 5000 + Math.floor(10000*Math.random()));
-	comm.sendCommand(tme, "4107678", 0, command);
-	command = 1 - command;	
+	comm.sendCommand(tme, house, 0, onoff);
+	onoff = !onoff;	
 	if (n++<10) {
 		setTimeout(() => {
 			sendCommand();

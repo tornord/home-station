@@ -5,19 +5,14 @@ import { Link } from "react-router-dom";
 import * as SunCalc from "suncalc";
 import { TimePicker } from 'antd';
 import moment from 'moment';
-import { Lamp } from './Lamp';
+import { Switch } from './Switch';
 import axios from 'axios';
 
 //SunCalc.addTime(-0.83, "customRise", "customSet");
 
-const timeFormat = 'HH:mm';
+//https://developers.google.com/maps/documentation/javascript/tutorial
 
-const config = {
-	name: "Röjningsstigen 5",
-	nexaHouseId: "4107678",
-	latitude: 59.3237778, //https://developers.google.com/maps/documentation/javascript/tutorial
-	longitude: 17.9531639
-}
+const timeFormat = 'HH:mm';
 
 //var toHHMM = (d) => d.getHours().toString().padStart(2,"0")+":"+d.getMinutes().toString().padStart(2,"0");
 //var showTime = (d) => <TimePicker defaultValue={ moment(d.valueOf()) } format={ timeFormat } disabled={ true } />;
@@ -30,13 +25,37 @@ export class App extends Component {
 
 	constructor() {
 		super();
-		this.state = { hasError: false, now: new Date(), simulated: null };
+		this.state = { hasError: false, now: new Date(), simulated: null, config: null };
 	}
 
 	//https://opendata-download-metfcst.smhi.se/api/category/pmp2g/version/2/geotype/point/lon/16/lat/58/data.json
 
 	componentDidMount() {
 		this.tickId = window.setInterval(() => this.tick(this), 5000);
+		axios.get("/config").then(response => {
+			if (response.status===200) {
+				var config = response.data;				
+				this.setState((prevState, props) => ({ ...prevState, config }));
+				this.hourTick(this);
+				this.hourTickId = window.setInterval(() => this.hourTick(this), 3600 * 1000);
+			}
+		});
+	}
+
+	componentWillUnmount() {
+		if (this.tickId) {
+			window.clearInterval(this.tickId);
+		}
+		if (this.hourTickId) {
+			window.clearInterval(this.hourTickId);
+		}
+	}
+
+	hourTick(_this) {
+		var { config } = _this;
+		if (!config) {
+			return;
+		}
 		var url = `https://opendata-download-metfcst.smhi.se/api/category/pmp2g/version/2/geotype/point/lon/${config.longitude.toFixed(4)}/lat/${config.latitude.toFixed(4)}/data.json`
 		axios.get(url).then(response => {
 			if (response.status===200) {
@@ -46,18 +65,13 @@ export class App extends Component {
 		});
 	}
 
-	componentWillUnmount() {
-		if (this.tickId) {
-			window.clearInterval(this.tickId);
-		}
- 	}
-
 	tick(_this) {
-		if (_this.state.simulated || (Lamp.totalHours(_this.state.now) === Lamp.totalHours(new Date()))) {
+		var now= new Date();
+		if (_this.state.simulated || (Switch.dateToMinutes(_this.state.now) === Switch.dateToMinutes(now))) {
 			return;
 		}
 		_this.setState((prevState, props) => {
-			return { hasError: false, now: new Date(), simulated: null };
+			return { hasError: false, now, simulated: null };
 		});
 	}
 
@@ -66,7 +80,7 @@ export class App extends Component {
 	}
 
 	timePickerChange(_this, e) {
-		console.log(Lamp.totalHours(e.toDate()));
+		console.log(Switch.dateToMinutes(e.toDate()));
 		_this.setState((prevState, props) => {
 			return { hasError: false, simulated: e.toDate(), now: null };
 		});
@@ -75,13 +89,21 @@ export class App extends Component {
 	render() {
 		var state = this.state;
 		var now = state.now ? state.now : state.simulated;
+		var config = state.config;
+		if (!config) {
+			return <div className="App">
+				<div className="App-header">
+					<h2>Loading ..</h2>
+				</div>
+			</div>;
+		}
 		var times = SunCalc.getTimes(now, config.latitude, config.longitude);
 		var moonIllumination = SunCalc.getMoonIllumination(now, config.latitude, config.longitude) // https://stardate.org/nightsky/moon
 		//var ms = [...Array(24)].map((d,i)=>SunCalc.getMoonIllumination(new Date(2018, 7, i+1), config.latitude, config.longitude));
-		var lamp = new Lamp(87654321, 0, 6.25, 23.25, 7.5, 0.5, config.latitude, config.longitude);
-		var lampState = lamp.getState(now.getDay(), Lamp.totalHours(now), lamp.getSun(now));
-		var nextSwitch = lamp.nextSwitch(now);
-		var nextNextSwitch = lamp.nextSwitch(nextSwitch.timestamp);
+		var s = new Switch("Hello", "123", 0, "06:15", "23.15", "07:30", "00:30", config.latitude, config.longitude);
+		var switchState = Switch.getState(now.getDay(), Switch.dateToMinutes(now), s.getSun(now), s.toMinutes(now));
+		var nextEvent = s.nextEvent(now);
+		var nextNextEvent = s.nextEvent(nextEvent.timestamp);
 		if (state.hasError) {
 			return <div className="App">
 				<div className="App-header">
@@ -98,9 +120,9 @@ export class App extends Component {
 					<div className="col-12">
 						<p>Välkommen!</p>
 						<p>Klockan är <TimePicker value={ moment(now.getTime()) } format={ timeFormat } onChange={ (e) => this.timePickerChange(this, e) } /></p>
-						<p>Lamporna är { lampState ? "PÅ" : "AV" }</p>
-						<p>De { nextSwitch.state ? "tänds" : "släcks" } { showTime(nextSwitch.timestamp) }</p>
-						<p>Därefter { nextNextSwitch.state ? "tänds" : "släcks" } de { showTime(nextNextSwitch.timestamp) }</p>
+						<p>Lamporna är { switchState ? "PÅ" : "AV" }</p>
+						<p>De { nextEvent.state ? "tänds" : "släcks" } { showTime(nextEvent.timestamp) }</p>
+						<p>Därefter { nextNextEvent.state ? "tänds" : "släcks" } de { showTime(nextNextEvent.timestamp) }</p>
 						<p>Solen går upp { showTime(times.sunrise) } och ned { showTime(times.sunset) }</p>
 						<p>Månens fas är { moonIllumination.fraction.toFixed(2) }</p>
 					</div>

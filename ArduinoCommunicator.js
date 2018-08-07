@@ -24,9 +24,9 @@ class ArduinoCommunicator {
 		this.port.on('data', (data) => this.onData(this, data));
 	}
 
-	sendCommand(tme, group, unit, command) {
-		this.messQueue.push([Math.round(tme.getTime()/1000).toFixed(0),
-			group, unit.toFixed(0), command.toFixed(0)].join(" "));
+	sendCommand(timestamp, house, group, onoff) {
+		this.messQueue.push([Math.round(timestamp.getTime()/1000).toFixed(0),
+			house, group.toFixed(0), onoff ? "1" : "0"].join(" "));
 	}
 
 	checkMessageQueue(_this) {

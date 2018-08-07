@@ -1,27 +1,46 @@
 "use strict";
 
-var fs = require("fs");
-var http = require("http");
-var express = require("express");
-var path = require("path");
-var parseArgs = require("minimist");
+const fs = require("fs");
+const http = require("http");
+const express = require("express");
+const path = require("path");
+const parseArgs = require("minimist");
+const bodyParser = require('body-parser');
+const moment = require('moment');
 
 var argv = parseArgs(process.argv.slice(2));
-var port = 80;
-if (argv.port) {
-	port = argv.port;
+var webport = 8080;
+if (argv.webport) {
+	webport = argv.webport;
+}
+var usbportname = "/dev/ttyACM0";
+if (argv.usbportname) {
+	usbportname = argv.usbportname;
 }
 
+var dataPath = path.join(__dirname, "..", "data");
+var config = JSON.parse(fs.readFileSync(path.join(dataPath, "config.json")));
+
 var app = express();
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "..", "build")));
 
+app.get("/config", function(req, res) {
+	res.json(config);
+});
+
+app.put("/config", function(req, res) {
+	console.log("PUT /config");
+	console.log(req.body);
+	config = { ...config, ...req.body };
+	fs.writeFileSync(path.join(dataPath, "config.json"), JSON.stringify(config, null, 2));
+	res.json(config);
+});
+
 app.get("/*", function(req, res) {
-	// res.header("Cache-Control", "private, no-cache, no-store, must-revalidate");
-	// res.header("Expires", "-1");
-	// res.header("Pragma", "no-cache");
 	res.sendFile(path.join(__dirname, "..", "build", "index.html"));
 });
 
 var webServer = http.createServer(app);
-webServer.listen(port);
-console.log("Running on port " + port);
+webServer.listen(webport);
+console.log("Running on port " + webport);

@@ -1,0 +1,14 @@
+{
+  "name": "Röjningsstigen 5",
+  "latitude": 59.3237778,
+  "longitude": 17.9531639,
+  "switches": [{
+	"name": "Innebelysning",
+	"house": "4107678",
+	"group": 0,
+	"wakeUp": "06:15",
+	"goToBed": "23.15", 
+	"weekendWakeUp": "07:30",
+	"weekendGoToBed": "00:30"
+  }]
+}

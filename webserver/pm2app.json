@@ -1,0 +1,9 @@
+{
+  "apps": [
+    {
+      "name": "webserver",
+      "script": "./webserver/app.js",
+      "args": "--webport 8080 --usbportname /dev/ttyACM0"
+    }
+  ]
+}
