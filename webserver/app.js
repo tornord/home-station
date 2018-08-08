@@ -31,7 +31,7 @@ var config = JSON.parse(fs.readFileSync(path.join(dataPath, "config.json")));
 
 function minuteTick(now) {
 	var m = Switch.dateToMinutes(now);
-    console.log("minuteTick " + moment(new Date(minute)).format("HH:mm") + " " + m);
+    console.log("minuteTick " + moment(new Date(now)).format("HH:mm") + " " + m);
     if (!switchStates || switchStates.length != config.switches.length) {
         switchStates = config.switches.map((d) => null);
     }
