@@ -24,8 +24,8 @@ var switchStates;
 
 var dataPath = path.join(__dirname, "..", "data");
 var config = JSON.parse(fs.readFileSync(path.join(dataPath, "config.json")));
-config.latitude = 36;
-config.longitude = 139;
+// config.latitude = 36;
+// config.longitude = 139;
 
 function minuteTick(now) {
     console.log("minuteTick " + moment(new Date(minute)).format("HH:mm") + " " + Switch.dateToMinutes(now));
