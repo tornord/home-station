@@ -8,6 +8,7 @@ const parseArgs = require("minimist");
 const bodyParser = require("body-parser");
 const moment = require("moment");
 const { Switch } = require("../commonjs/src/Switch");
+const { ArduinoCommunicator } = require("../ArduinoCommunicator");
 
 var argv = parseArgs(process.argv.slice(2));
 var webport = 8080;
@@ -21,6 +22,7 @@ if (argv.usbportname) {
 
 var minute;
 var switchStates;
+var comm = new ArduinoCommunicator(usbportname);
 
 var dataPath = path.join(__dirname, "..", "data");
 var config = JSON.parse(fs.readFileSync(path.join(dataPath, "config.json")));
@@ -28,25 +30,26 @@ var config = JSON.parse(fs.readFileSync(path.join(dataPath, "config.json")));
 // config.longitude = 139;
 
 function minuteTick(now) {
-    console.log("minuteTick " + moment(new Date(minute)).format("HH:mm") + " " + Switch.dateToMinutes(now));
+	var m = Switch.dateToMinutes(now);
+    console.log("minuteTick " + moment(new Date(minute)).format("HH:mm") + " " + m);
     if (!switchStates || switchStates.length != config.switches.length) {
         switchStates = config.switches.map((d) => null);
     }
     config.switches.forEach((d, i) => {
         var s = new Switch(d.name, d.house, d.group, d.wakeUp, d.goToBed, d.weekendWakeUp, d.weekendGoToBed, config.latitude, config.longitude);
         var { sunrise, sunset } = s.getSun(now);
-        if (sunrise < sunset) {
+        if (sunset < sunrise) {
             sunset += 24 * 60;
         }
-        var m = Switch.dateToMinutes(now);
         if (i == 0) {
-            console.log(m > sunrise && m < sunset ? "day" : "night");
+            console.log((m > sunrise && m < sunset ? "day" : "night"));
         }
         var state = s.getState(now);
         console.log("state " + i + " " + switchStates[i] + " => " + state);
         if (switchStates[i] === null || switchStates[i] !== state) {
             switchStates[i] = state;
-            console.log("command " + d.house + " " + d.group + " " + state);
+			console.log("command " + d.house + " " + d.group + " " + state);
+			comm.sendCommand(d.house, d.group, state);
         }
     });
 }
