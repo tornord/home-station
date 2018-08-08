@@ -43,7 +43,7 @@ function minuteTick(now) {
             console.log(m > sunrise && m < sunset ? "day" : "night");
         }
         var state = s.getState(now);
-        console.log("state " + i + " " + state);
+        console.log("state " + i + " " + switchStates[i] + " => " + state);
         if (switchStates[i] === null || switchStates[i] !== state) {
             switchStates[i] = state;
             console.log("command " + d.house + " " + d.group + " " + state);
@@ -75,6 +75,9 @@ app.put("/config", function(req, res) {
     console.log(req.body);
     config = { ...config, ...req.body };
     fs.writeFileSync(path.join(dataPath, "config.json"), JSON.stringify(config, null, 2));
+    minute = null;
+    switchStates = null;
+    minuteTick(new Date());
     res.json(config);
 });
 
