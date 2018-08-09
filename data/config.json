@@ -1,9 +1,426 @@
 {
+  "name": "Röjningsstigen 5",
+  "latitude": 59.3237778,
+  "longitude": 17.9531639,
+  "switches": [
+    {
+      "name": "Innebelysning",
+      "house": "4107678",
+      "group": 0,
+      "wakeUp": "06:15",
+      "goToBed": "23:15",
+      "weekendWakeUp": "07:30",
+      "weekendGoToBed": "00:30"
+    },
+    {
+      "name": "Trädgård",
+      "house": "4107678",
+      "group": 1,
+      "wakeUp": "05:00",
+      "goToBed": "00:30",
+      "weekendWakeUp": "07:00",
+      "weekendGoToBed": "00:30"
+    }
+  ],
+  "schema": {
+    "title": "Inställningar",
+    "type": "object",
+    "required": [
+      "name",
+      "latitude",
+      "longitude",
+      "switches"
+    ],
+    "properties": {
+      "name": {
+        "title": "Namn",
+        "type": "string"
+      },
+      "latitude": {
+        "title": "Latitud",
+        "type": "number"
+      },
+      "longitude": {
+        "title": "Longitud",
+        "type": "number"
+      },
+      "switches": {
+        "type": "array",
+        "title": "Grupper",
+        "items": {
+          "type": "object",
+          "required": [
+            "name",
+            "house",
+            "group",
+            "wakeUp",
+            "goToBed",
+            "weekendWakeUp",
+            "weekendGoToBed"
+          ],
+          "properties": {
+            "name": {
+              "title": "Namn",
+              "type": "string"
+            },
+            "house": {
+              "title": "Nexa House ID",
+              "type": "string"
+            },
+            "group": {
+              "title": "Grupp",
+              "type": "number"
+            },
+            "wakeUp": {
+              "title": "Tänds",
+              "type": "string",
+              "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+              "default": "07:00"
+            },
+            "goToBed": {
+              "title": "Släcks",
+              "type": "string",
+              "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+              "default": "23:00"
+            },
+            "weekendWakeUp": {
+              "title": "Tänds helger",
+              "type": "string",
+              "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+              "default": "08:00"
+            },
+            "weekendGoToBed": {
+              "title": "Släcks helger",
+              "type": "string",
+              "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+              "default": "00:00"
+            }
+          }
+        }
+      }
+    }
+  },
+  "uiSchema": {},
+  "idSchema": {
+    "$id": "root",
+    "name": {
+      "$id": "root_name"
+    },
+    "latitude": {
+      "$id": "root_latitude"
+    },
+    "longitude": {
+      "$id": "root_longitude"
+    },
+    "switches": {
+      "$id": "root_switches",
+      "name": {
+        "$id": "root_switches_name"
+      },
+      "house": {
+        "$id": "root_switches_house"
+      },
+      "group": {
+        "$id": "root_switches_group"
+      },
+      "wakeUp": {
+        "$id": "root_switches_wakeUp"
+      },
+      "goToBed": {
+        "$id": "root_switches_goToBed"
+      },
+      "weekendWakeUp": {
+        "$id": "root_switches_weekendWakeUp"
+      },
+      "weekendGoToBed": {
+        "$id": "root_switches_weekendGoToBed"
+      }
+    }
+  },
+  "formData": {
     "name": "Röjningsstigen 5",
     "latitude": 59.3237778,
     "longitude": 17.9531639,
     "switches": [
+      {
+        "name": "Innebelysning",
+        "house": "4107678",
+        "group": 0,
+        "wakeUp": "06:15",
+        "goToBed": "23:15",
+        "weekendWakeUp": "07:30",
+        "weekendGoToBed": "00:30"
+      },
+      {
+        "name": "Trädgård",
+        "house": "4107678",
+        "group": 1,
+        "wakeUp": "05:00",
+        "goToBed": "00:30",
+        "weekendWakeUp": "07:00",
+        "weekendGoToBed": "00:30"
+      }
+    ],
+    "schema": {
+      "title": "Inställningar",
+      "type": "object",
+      "required": [
+        "name",
+        "latitude",
+        "longitude",
+        "switches"
+      ],
+      "properties": {
+        "name": {
+          "title": "Namn",
+          "type": "string"
+        },
+        "latitude": {
+          "title": "Latitud",
+          "type": "number"
+        },
+        "longitude": {
+          "title": "Longitud",
+          "type": "number"
+        },
+        "switches": {
+          "type": "array",
+          "title": "Grupper",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "house",
+              "group",
+              "wakeUp",
+              "goToBed",
+              "weekendWakeUp",
+              "weekendGoToBed"
+            ],
+            "properties": {
+              "name": {
+                "title": "Namn",
+                "type": "string"
+              },
+              "house": {
+                "title": "Nexa House ID",
+                "type": "string"
+              },
+              "group": {
+                "title": "Grupp",
+                "type": "number"
+              },
+              "wakeUp": {
+                "title": "Tänds",
+                "type": "string",
+                "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                "default": "07:00"
+              },
+              "goToBed": {
+                "title": "Släcks",
+                "type": "string",
+                "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                "default": "23:00"
+              },
+              "weekendWakeUp": {
+                "title": "Tänds helger",
+                "type": "string",
+                "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                "default": "08:00"
+              },
+              "weekendGoToBed": {
+                "title": "Släcks helger",
+                "type": "string",
+                "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                "default": "00:00"
+              }
+            }
+          }
+        }
+      }
+    },
+    "uiSchema": {},
+    "idSchema": {
+      "$id": "root",
+      "name": {
+        "$id": "root_name"
+      },
+      "latitude": {
+        "$id": "root_latitude"
+      },
+      "longitude": {
+        "$id": "root_longitude"
+      },
+      "switches": {
+        "$id": "root_switches",
+        "name": {
+          "$id": "root_switches_name"
+        },
+        "house": {
+          "$id": "root_switches_house"
+        },
+        "group": {
+          "$id": "root_switches_group"
+        },
+        "wakeUp": {
+          "$id": "root_switches_wakeUp"
+        },
+        "goToBed": {
+          "$id": "root_switches_goToBed"
+        },
+        "weekendWakeUp": {
+          "$id": "root_switches_weekendWakeUp"
+        },
+        "weekendGoToBed": {
+          "$id": "root_switches_weekendGoToBed"
+        }
+      }
+    },
+    "formData": {
+      "name": "Röjningsstigen 5",
+      "latitude": 59.3237778,
+      "longitude": 17.9531639,
+      "switches": [
         {
+          "name": "Innebelysning",
+          "house": "4107678",
+          "group": 0,
+          "wakeUp": "06:15",
+          "goToBed": "23:15",
+          "weekendWakeUp": "07:30",
+          "weekendGoToBed": "00:30"
+        },
+        {
+          "name": "Trädgård",
+          "house": "4107678",
+          "group": 1,
+          "wakeUp": "05:00",
+          "goToBed": "00:20",
+          "weekendWakeUp": "07:00",
+          "weekendGoToBed": "00:30"
+        }
+      ],
+      "schema": {
+        "title": "Inställningar",
+        "type": "object",
+        "required": [
+          "name",
+          "latitude",
+          "longitude",
+          "switches"
+        ],
+        "properties": {
+          "name": {
+            "title": "Namn",
+            "type": "string"
+          },
+          "latitude": {
+            "title": "Latitud",
+            "type": "number"
+          },
+          "longitude": {
+            "title": "Longitud",
+            "type": "number"
+          },
+          "switches": {
+            "type": "array",
+            "title": "Grupper",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "house",
+                "group",
+                "wakeUp",
+                "goToBed",
+                "weekendWakeUp",
+                "weekendGoToBed"
+              ],
+              "properties": {
+                "name": {
+                  "title": "Namn",
+                  "type": "string"
+                },
+                "house": {
+                  "title": "Nexa House ID",
+                  "type": "string"
+                },
+                "group": {
+                  "title": "Grupp",
+                  "type": "number"
+                },
+                "wakeUp": {
+                  "title": "Tänds",
+                  "type": "string",
+                  "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                  "default": "07:00"
+                },
+                "goToBed": {
+                  "title": "Släcks",
+                  "type": "string",
+                  "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                  "default": "23:00"
+                },
+                "weekendWakeUp": {
+                  "title": "Tänds helger",
+                  "type": "string",
+                  "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                  "default": "08:00"
+                },
+                "weekendGoToBed": {
+                  "title": "Släcks helger",
+                  "type": "string",
+                  "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                  "default": "00:00"
+                }
+              }
+            }
+          }
+        }
+      },
+      "uiSchema": {},
+      "idSchema": {
+        "$id": "root",
+        "name": {
+          "$id": "root_name"
+        },
+        "latitude": {
+          "$id": "root_latitude"
+        },
+        "longitude": {
+          "$id": "root_longitude"
+        },
+        "switches": {
+          "$id": "root_switches",
+          "name": {
+            "$id": "root_switches_name"
+          },
+          "house": {
+            "$id": "root_switches_house"
+          },
+          "group": {
+            "$id": "root_switches_group"
+          },
+          "wakeUp": {
+            "$id": "root_switches_wakeUp"
+          },
+          "goToBed": {
+            "$id": "root_switches_goToBed"
+          },
+          "weekendWakeUp": {
+            "$id": "root_switches_weekendWakeUp"
+          },
+          "weekendGoToBed": {
+            "$id": "root_switches_weekendGoToBed"
+          }
+        }
+      },
+      "formData": {
+        "name": "Röjningsstigen 5",
+        "latitude": 59.3237778,
+        "longitude": 17.9531639,
+        "switches": [
+          {
             "name": "Innebelysning",
             "house": "4107678",
             "group": 0,
@@ -11,8 +428,8 @@
             "goToBed": "23:15",
             "weekendWakeUp": "07:30",
             "weekendGoToBed": "00:30"
-        },
-        {
+          },
+          {
             "name": "Trädgård",
             "house": "4107678",
             "group": 1,
@@ -20,6 +437,21 @@
             "goToBed": "00:30",
             "weekendWakeUp": "07:00",
             "weekendGoToBed": "00:30"
-        }
-    ]
+          }
+        ]
+      },
+      "edit": true,
+      "errors": [],
+      "errorSchema": {},
+      "status": "submitted"
+    },
+    "edit": true,
+    "errors": [],
+    "errorSchema": {},
+    "status": "submitted"
+  },
+  "edit": true,
+  "errors": [],
+  "errorSchema": {},
+  "status": "submitted"
 }

@@ -32,7 +32,6 @@ var config = JSON.parse(fs.readFileSync(path.join(dataPath, "config.json")));
 
 function minuteTick(now) {
     var m = Switch.dateToMinutes(now);
-    console.log("minuteTick " + moment(new Date(now)).format("HH:mm") + " " + m);
     if (!switchStates || switchStates.length != config.switches.length) {
         switchStates = config.switches.map((d) => null);
     }
@@ -43,7 +42,7 @@ function minuteTick(now) {
             sunset += 24 * 60;
         }
         if (i == 0) {
-            console.log(m > sunrise && m < sunset ? "day" : "night");
+            console.log("minuteTick " + moment(new Date(now)).format("HH:mm") + " " + m + " " + (m > sunrise && m < sunset ? "day" : "night"));
         }
         var state = s.getState(now);
         console.log("state " + i + " " + switchStates[i] + " => " + state);

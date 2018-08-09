@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import "./App.css";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import * as SunCalc from "suncalc";
-import { TimePicker } from "antd";
+// import { TimePicker } from "antd";
 import moment from "moment";
 import { Switch } from "./Switch";
-import { Config } from "./Config";
 import axios from "axios";
+import { Cogwheel } from "./Svgs";
 
 //SunCalc.addTime(-0.83, "customRise", "customSet");
 
@@ -33,7 +32,7 @@ export class App extends Component {
 
     componentDidMount() {
         this.tickId = window.setInterval(() => this.tick(this), 5000);
-        axios.get("http://localhost:8080/config").then((response) => {
+        axios.get("/config").then((response) => {
             if (response.status === 200) {
                 var config = response.data;
                 this.setState((prevState, props) => ({ ...prevState, config }));
@@ -102,11 +101,14 @@ export class App extends Component {
         }
         var times = SunCalc.getTimes(now, config.latitude, config.longitude);
         var moonIllumination = SunCalc.getMoonIllumination(now, config.latitude, config.longitude); // https://stardate.org/nightsky/moon
-        //var ms = [...Array(24)].map((d,i)=>SunCalc.getMoonIllumination(new Date(2018, 7, i+1), config.latitude, config.longitude));
-        var s = new Switch("Hello", "123", 0, "06:15", "23.15", "07:30", "00:30", config.latitude, config.longitude);
-        var switchState = s.getState(now);
-        var nextEvent = s.nextEvent(now);
-        var nextNextEvent = s.nextEvent(nextEvent.timestamp);
+		//var ms = [...Array(24)].map((d,i)=>SunCalc.getMoonIllumination(new Date(2018, 7, i+1), config.latitude, config.longitude));
+		var switches = config.switches.map(sw => {
+			let s = new Switch(sw.name, sw.house, sw.group, sw.wakeUp, sw.goToBed, sw.weekendWakeUp, sw.weekendGoToBed, config.latitude, config.longitude);
+			let state = s.getState(now);
+			let nextEvent = s.nextEvent(now);
+			let nextNextEvent = s.nextEvent(nextEvent.timestamp);
+			return { name: sw.name, state, nextEvent, nextNextEvent };
+		});
         if (state.hasError) {
             return (
                 <div className="App">
@@ -116,34 +118,35 @@ export class App extends Component {
                 </div>
             );
         }
-        // 	<p>
-        // 	Solen går upp {showTime(times.sunrise)} och ned {showTime(times.sunset)}
-        // </p>
         // <p>Månens fas är {moonIllumination.fraction.toFixed(2)}</p>
+		// Klockan är <TimePicker value={moment(now.getTime())} format={timeFormat} onChange={(e) => this.timePickerChange(this, e)} />
         return (
             <div className="App">
                 <div className="App-header">
-                    <h2>{config.name}</h2>
+					<Link to="/setup"><Cogwheel /></Link>
+                    <h2 className="with-cogwheel">{config.name}</h2>
                 </div>
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                            <p>Välkommen!</p>
+                            <h3>Välkommen!</h3>
                             <p>
-                                Klockan är <TimePicker value={moment(now.getTime())} format={timeFormat} onChange={(e) => this.timePickerChange(this, e)} />
+                            	Klockan är {showTime(now)}
                             </p>
-                            <p>Lamporna är {switchState ? "PÅ" : "AV"}</p>
-                            <p>
-                                De {nextEvent.state ? "tänds" : "släcks"} {showTime(nextEvent.timestamp)}
-                            </p>
-                            <p>
-                                Därefter {nextNextEvent.state ? "tänds" : "släcks"} de {showTime(nextNextEvent.timestamp)}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-12">
-                            <Config value={config} />
+							<hr />
+							{ switches.map((d,i) => <div key={ i }>
+									<p> 
+										{ d.name } är <span className="timestamp"> {d.state ? "PÅ" : "AV"}</span>
+									</p>
+									<p>
+										De {d.nextEvent.state ? "tänds" : "släcks"} {showTime(d.nextEvent.timestamp)}
+										&nbsp;därefter {d.nextNextEvent.state ? "tänds" : "släcks"} de {showTime(d.nextNextEvent.timestamp)}
+									</p>
+									<hr />
+								</div>) }
+							<p>
+        						Solen går upp {showTime(times.sunrise)} och ned {showTime(times.sunset)}
+        					</p>
                         </div>
                     </div>
                 </div>

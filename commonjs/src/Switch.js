@@ -132,6 +132,7 @@ var Switch = exports.Switch = function () {
         key: "dateToMinutes",
         value: function dateToMinutes(d) {
             var t1 = d.getTime();
+            t1 = t1 - t1 % (60 * 1000);
             var t0 = new Date(d.getTime()).setHours(0, 0, 0, 0);
             return (t1 - t0) / Switch.msPerMinute;
         }
