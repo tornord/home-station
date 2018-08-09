@@ -9,7 +9,8 @@ body {
   margin: 0;
   padding: 0;
   color: #333;
-  background-color: #fff; }
+  background-color: #fff;
+  font-size: 17px; }
 
 *,
 button,
@@ -32,12 +33,12 @@ textarea {
     color: white;
     background-color: #222; }
   .App-header h2.with-cogwheel {
-    margin-left: 46px; }
+    margin-left: 32px; }
   .App-header .cogwheel {
     width: 34px;
     height: 34px;
     float: right;
-    margin: 2px 12px 0 0;
+    margin: 2px 8px 0 0;
     background-color: inherit; }
     .App-header .cogwheel path {
       fill: white;
