@@ -1,40 +1,53 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-header {
-  background-color: #222;
-  height: 60px;
-  padding: 10px;
-  color: white;
-  margin-bottom: 10px;
+    background-color: #222;
+    height: 60px;
+    padding: 10px;
+    color: white;
+    margin-bottom: 10px;
 }
 
 .App-header h2 {
-  color: white;
-  background-color: #222;
+    color: white;
+    background-color: #222;
 }
 
 .App-title {
-  font-size: 1.5em;
+    font-size: 1.5em;
 }
 
 .App-intro {
-  font-size: 12px;
+    font-size: 12px;
 }
 
 button#run {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 p.model-links {
-  word-wrap: break-word;
-  font-size: 12px;  
+    word-wrap: break-word;
+    font-size: 12px;
 }
 
 span.timestamp {
-  background: #333;
-  border-radius: 3px;
-  color: #bbb;
-  padding: 0px 3px;
+    background: #333;
+    border-radius: 3px;
+    color: #bbb;
+    padding: 0px 3px;
+}
+
+.rjsf .row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.rjsf i.glyphicon {
+    background-color: inherit;
+}
+
+.rjsf .btn-default {
+    background-color: #ddd;
 }

@@ -1,0 +1,65 @@
+{
+    "title": "Inställningar",
+    "type": "object",
+    "required": ["name", "latitude", "longitude", "switches"],
+    "properties": {
+        "name": {
+            "title": "Namn",
+            "type": "string"
+        },
+        "latitude": {
+            "title": "Latitud",
+            "type": "number"
+        },
+        "longitude": {
+            "title": "Longitud",
+            "type": "number"
+        },
+        "switches": {
+            "type": "array",
+            "title": "Grupper",
+            "items": {
+                "type": "object",
+                "required": ["name", "house", "group", "wakeUp", "goToBed", "weekendWakeUp", "weekendGoToBed"],
+                "properties": {
+                    "name": {
+                        "title": "Namn",
+                        "type": "string"
+                    },
+                    "house": {
+                        "title": "Nexa House ID",
+                        "type": "string"
+                    },
+                    "group": {
+                        "title": "Grupp",
+                        "type": "number"
+                    },
+                    "wakeUp": {
+                        "title": "Tänds",
+                        "type": "string",
+                        "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                        "default": "07:00"
+                    },
+                    "goToBed": {
+                        "title": "Släcks",
+                        "type": "string",
+                        "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                        "default": "23:00"
+                    },
+                    "weekendWakeUp": {
+                        "title": "Tänds helger",
+                        "type": "string",
+                        "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                        "default": "08:00"
+                    },
+                    "weekendGoToBed": {
+                        "title": "Släcks helger",
+                        "type": "string",
+                        "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+                        "default": "00:00"
+                    }
+                }
+            }
+        }
+    }
+}

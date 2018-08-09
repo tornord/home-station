@@ -1,16 +1,25 @@
 {
-  "name": "Röjningsstigen 5",
-  "latitude": 59.3237778,
-  "longitude": 17.9531639,
-  "switches": [
-    {
-      "name": "Innebelysning",
-      "house": "4107678",
-      "group": 0,
-      "wakeUp": "06:15",
-      "goToBed": "23:15",
-      "weekendWakeUp": "07:30",
-      "weekendGoToBed": "00:30"
-    }
-  ]
+    "name": "Röjningsstigen 5",
+    "latitude": 59.3237778,
+    "longitude": 17.9531639,
+    "switches": [
+        {
+            "name": "Innebelysning",
+            "house": "4107678",
+            "group": 0,
+            "wakeUp": "06:15",
+            "goToBed": "23:15",
+            "weekendWakeUp": "07:30",
+            "weekendGoToBed": "00:30"
+        },
+        {
+            "name": "Trädgård",
+            "house": "4107678",
+            "group": 1,
+            "wakeUp": "05:00",
+            "goToBed": "00:30",
+            "weekendWakeUp": "07:00",
+            "weekendGoToBed": "00:30"
+        }
+    ]
 }

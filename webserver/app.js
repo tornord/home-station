@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 const moment = require("moment");
 const { Switch } = require("../commonjs/src/Switch");
 const { ArduinoCommunicator } = require("../ArduinoCommunicator");
+const cors = require("cors");
 
 var argv = parseArgs(process.argv.slice(2));
 var webport = 8080;
@@ -30,7 +31,7 @@ var config = JSON.parse(fs.readFileSync(path.join(dataPath, "config.json")));
 // config.longitude = 139;
 
 function minuteTick(now) {
-	var m = Switch.dateToMinutes(now);
+    var m = Switch.dateToMinutes(now);
     console.log("minuteTick " + moment(new Date(now)).format("HH:mm") + " " + m);
     if (!switchStates || switchStates.length != config.switches.length) {
         switchStates = config.switches.map((d) => null);
@@ -42,14 +43,14 @@ function minuteTick(now) {
             sunset += 24 * 60;
         }
         if (i == 0) {
-            console.log((m > sunrise && m < sunset ? "day" : "night"));
+            console.log(m > sunrise && m < sunset ? "day" : "night");
         }
         var state = s.getState(now);
         console.log("state " + i + " " + switchStates[i] + " => " + state);
         if (switchStates[i] === null || switchStates[i] !== state) {
             switchStates[i] = state;
-			console.log("command " + d.house + " " + d.group + " " + state);
-			comm.sendCommand(d.house, d.group, state);
+            console.log("command " + d.house + " " + d.group + " " + state);
+            comm.sendCommand(d.house, d.group, state);
         }
     });
 }
@@ -67,6 +68,7 @@ setInterval(tick, 1000);
 
 var app = express();
 app.use(bodyParser.json());
+app.use(cors());
 app.use(express.static(path.join(__dirname, "..", "build")));
 
 app.get("/config", function(req, res) {
