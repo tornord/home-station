@@ -1,0 +1,25 @@
+.lightbulb {
+    path {
+        fill: #888;
+    }
+    &.off {
+        path.inner {
+            fill: #888;
+            fill-opacity: 0.5;
+        }
+        path.ray {
+            fill: #ffd15c;
+            fill-opacity: 0;
+        }
+    }
+    &.on {
+        path.inner {
+            fill: #ffd15c;
+            fill-opacity: 1;
+        }
+        path.ray {
+            fill: #ffd15c;
+            fill-opacity: 1;
+        }
+    }
+}

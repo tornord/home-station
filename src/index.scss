@@ -1,6 +1,6 @@
 @font-face {
     font-family: "GothamRounded-Book";
-    src: url("./GothamRounded-Book.woff") format("woff");
+    src: url("./media/GothamRounded-Book.woff") format("woff");
     font-weight: normal;
     font-style: normal;
 }
@@ -24,4 +24,5 @@ textarea {
 }
 
 @import "src/App.scss";
+@import "src/Svgs.scss";
 @import "src/media/glyphicon.scss";
