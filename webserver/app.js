@@ -35,6 +35,7 @@ function minuteTick(now) {
     if (!switchStates || switchStates.length != config.switches.length) {
         switchStates = config.switches.map((d) => null);
     }
+    var log = "minuteTick " + moment(new Date(now)).format("HH:mm") + " " + m;
     config.switches.forEach((d, i) => {
         var s = new Switch(d.name, d.house, d.group, d.wakeUp, d.goToBed, d.weekendWakeUp, d.weekendGoToBed, config.latitude, config.longitude);
         var { sunrise, sunset } = s.getSun(now);
@@ -42,16 +43,17 @@ function minuteTick(now) {
             sunset += 24 * 60;
         }
         if (i == 0) {
-            console.log("minuteTick " + moment(new Date(now)).format("HH:mm") + " " + m + " " + (m > sunrise && m < sunset ? "day" : "night"));
+            log += " " + (m > sunrise && m < sunset ? "day" : "night");
         }
         var state = s.getState(now);
-        console.log("state " + i + " " + switchStates[i] + " => " + state);
+        log += ", " + i + ": " + switchStates[i] + " => " + state;
         if (switchStates[i] === null || switchStates[i] !== state) {
             switchStates[i] = state;
-            console.log("command " + d.house + " " + d.group + " " + state);
+            log += " command " + d.house + " " + d.group + " " + state;
             comm.sendCommand(d.house, d.group, state);
         }
     });
+    console.log(log);
 }
 
 function tick() {
