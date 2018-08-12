@@ -78,6 +78,14 @@ app.get("/config", function(req, res) {
 
 app.put("/config", function(req, res) {
     console.log("PUT /config");
+    delete req.body.schema;
+    delete req.body.uiSchema;
+    delete req.body.idSchema;
+    delete req.body.formData;
+    delete req.body.edit;
+    delete req.body.errors;
+    delete req.body.errorSchema;
+    delete req.body.status;
     console.log(req.body);
     config = { ...config, ...req.body };
     fs.writeFileSync(path.join(dataPath, "config.json"), JSON.stringify(config, null, 2));
