@@ -11,7 +11,7 @@ export function Cogwheel() {
     );
 }
 
-export function LightBulb() {
+export function LightBulb(props) {
     var w = 229.018;
     var h = 229.018;
     return (
